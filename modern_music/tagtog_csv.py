@@ -6,10 +6,11 @@ import re
 from random import randint
 import random
 from collections import deque
+from tqdm.auto import tqdm
 
 ###### 폴더명 & csv 파일명 설정 #######
 folder = "./NLP/"
-csv_name = "./tagtog_NLP_status.csv"
+# csv_name = "./tagtog_NLP_status.csv"
 genre_json = os.path.join(folder, "ann.json/master/pool/")
 genre_html = os.path.join(folder, "plain.html/pool/")
 ###################################
@@ -23,7 +24,7 @@ with open(os.path.join(folder, "annotations-legend.json"), "r") as f:
 genre_json_folder = os.listdir(genre_json)
 genre_list = []
 
-for genre in genre_json_folder:
+for genre in tqdm(genre_json_folder, desc="make pair of json & html"):
     json_sub_list = glob(os.path.join(genre_json+genre, "*"))
     json_files = [file.split('/')[-1].split('.ann')[0] for file in json_sub_list]
     html_sub_list = [os.path.join(genre_html+genre, file) + ".plain.html" for file in json_files if os.path.exists(os.path.join(genre_html+genre, file) + ".plain.html")]
@@ -128,13 +129,30 @@ def get_sentence_re(json_path, html_path):
             add_object.append(valid_obj)
             add_label.append(valid_label)
 
-    rand_sub, rand_obj = get_random_entities(ent_list)
-    add_sents.append(sentence)
-    add_subject.append(rand_sub)
-    add_object.append(rand_obj)
-    add_label.append("no_relation")
+    if len(ent_list) > 2:
+        rand_sub, rand_obj = get_random_entities(ent_list)
+        add_sents.append(sentence)
+        add_subject.append(rand_sub)
+        add_object.append(rand_obj)
+        add_label.append("no_relation")
 
     return add_sents, add_subject, add_object, add_label
 
+def main():
+    sentence = []
+    subject_entity = []
+    object_entity = []
+    label = []
+    for json_path, html_path in tqdm(genre_list, desc="processing csv"):
+        add_sents, add_subject, add_object, add_label = get_sentence_re(json_path, html_path)
+        sentence.extend(add_sents)
+        subject_entity.extend(add_subject)
+        object_entity.extend(add_object)
+        label.extend(add_label)
+
+    df = pd.DataFrame({'id':list(range(len(label))), 'sentence':sentence, 'subject_entity':subject_entity, 'object_entity':object_entity, 'label':label})
+    df.to_csv("./modern_music.csv", index=False)
 
 
+if __name__ == "__main__":
+    main()
