@@ -3,6 +3,8 @@ import json
 from glob import glob
 import pandas as pd
 import re
+from random import randint
+import random
 from collections import deque
 
 ###### 폴더명 & csv 파일명 설정 #######
@@ -30,14 +32,19 @@ for genre in genre_json_folder:
     added_list = [(j, h) for j, h in zip(json_sub_list, html_sub_list)]
     genre_list.extend(added_list)
 
+
 # html로부터 문장 추출하는 함수
 def get_context_from_html(html_file):
     html_file = re.sub(r"\n","", html_file)
     return re.findall("(<pre.+>)(.+)(</pre>)",html_file)[0][1]
 
 
-def get_random_entities():
-    pass
+# 높은 확률로 no_relation을 만들기 위한 random (sub, obj) pair 만들기
+def get_random_entities(entities):
+    assert len(entities)>2, "number of entities must be more than 2"
+    num_entities = len(entities)
+    sub, obj = random.sample(range(num_entities), 2)
+    return entities[sub], entities[obj]
 
 
 # {"classId":"r_11",
@@ -46,7 +53,7 @@ def get_random_entities():
 # "entities":["s1s1v1|e_1|13,13","s1s1v1|e_5|33,34"],
 # "confidence":{"state":"pre-added","who":["user:Doohae"],"prob":1}}
 
-# 위 형태의 relation_dict와 문장을 입력으로 넣어줬을 때 train.csv 형식에 맞게 subject, object, relation 반환
+# 위 형태의 relation_dict와 문장을 입력으로 들어올 때 train.csv 형식에 맞게 subject, object, relation 반환
 def relation_set(relation_dict, sentence, mapping=mapping):
     relation = mapping[relation_dict['classId']]
     sub_start_idx, sub_end_idx = tuple(map(int, relation_dict['entities'][0].split('|')[-1].split(',')))
