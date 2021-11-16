@@ -43,8 +43,8 @@ def get_context_from_html(html_file):
 def get_random_entities(entities):
     assert len(entities)>2, "number of entities must be more than 2"
     num_entities = len(entities)
-    sub, obj = random.sample(range(num_entities), 2)
-    return entities[sub], entities[obj]
+    sub_id, obj_id = random.sample(range(num_entities), 2)
+    return entities[sub_id], entities[obj_id]
 
 
 # {"classId":"r_11",
@@ -55,7 +55,7 @@ def get_random_entities(entities):
 
 # 위 형태의 relation_dict와 문장을 입력으로 들어올 때 train.csv 형식에 맞게 subject, object, relation 반환
 def relation_set(relation_dict, sentence, mapping=mapping):
-    relation = mapping[relation_dict['classId']]
+    label = mapping[relation_dict['classId']]
     sub_start_idx, sub_end_idx = tuple(map(int, relation_dict['entities'][0].split('|')[-1].split(',')))
     obj_start_idx, obj_end_idx = tuple(map(int, relation_dict['entities'][1].split('|')[-1].split(',')))
     sub_type = mapping[relation_dict['entities'][0].split('|')[1]]
@@ -64,7 +64,7 @@ def relation_set(relation_dict, sentence, mapping=mapping):
     obj_word = sentence[obj_start_idx:obj_end_idx+1]
     return {'word':sub_word, 'start_idx':sub_start_idx, 'end_idx':sub_end_idx, 'type':sub_type}, \
             {'word':obj_word, 'start_idx':obj_start_idx, 'end_idx':obj_end_idx, 'type':obj_type}, \
-            relation
+            label
 
 # [{'classId': 'e_1',
 #   'part': 's1s1v1',
@@ -112,8 +112,29 @@ def get_sentence_re(json_path, html_path):
         end_idx = start_idx + len(word) - 1
         ent_list.append({'word':word, 'start_idx':start_idx, 'end_idx':end_idx, 'type':ent_type})
     
+    add_sents = []
+    add_subject = []
+    add_object = []
+    add_label = []
+
     relations = json_file['relations']
     if len(relations) == 0:
         pass
     else:
-        pass
+        for relation in relations:
+            valid_sub, valid_obj, valid_label = relation_set(relation, sentence)
+            add_sents.append(sentence)
+            add_subject.append(valid_sub)
+            add_object.append(valid_obj)
+            add_label.append(valid_label)
+
+    rand_sub, rand_obj = get_random_entities(ent_list)
+    add_sents.append(sentence)
+    add_subject.append(rand_sub)
+    add_object.append(rand_obj)
+    add_label.append("no_relation")
+
+    return add_sents, add_subject, add_object, add_label
+
+
+
