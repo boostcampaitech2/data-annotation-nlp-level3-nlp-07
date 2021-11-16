@@ -16,7 +16,7 @@ genre_html = os.path.join(folder, "plain.html/pool/")
 ###################################
 
 # entity, relation 맵핑
-with open(os.path.join(folder, "annotations-legend.json"), "r") as f:
+with open(os.path.join(folder, "annotations-legend.json"), mode="r", encoding="utf-8") as f:
     mapping = json.load(f)
 
 
@@ -97,12 +97,13 @@ def relation_set(relation_dict, sentence, mapping=mapping):
 
 # sentence, ent1, ent2, relation 묶음 만들기
 def get_sentence_re(json_path, html_path):
-    with open(html_path, "r") as f:
+    with open(html_path, mode="r", encoding="utf-8") as f:
         html_file = f.read()
     sentence = get_context_from_html(html_file)
+    sentence = sentence.replace("&quot;", "\"")
     assert type(sentence)==type("abc"), "sentence type incorrect!"
 
-    with open(json_path, "r") as f:
+    with open(json_path, mode="r", encoding="utf-8") as f:
         json_file = json.load(f)
     entities = json_file['entities']
     ent_list = []
