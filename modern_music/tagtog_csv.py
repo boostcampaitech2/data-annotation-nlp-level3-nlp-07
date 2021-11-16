@@ -56,7 +56,8 @@ def get_random_entities(entities):
 
 # 위 형태의 relation_dict와 문장을 입력으로 들어올 때 train.csv 형식에 맞게 subject, object, relation 반환
 def relation_set(relation_dict, sentence, mapping=mapping):
-    label = mapping[relation_dict['classId']]
+    # label = mapping[relation_dict['classId']]
+    label = relation_dict['classId']
     sub_start_idx, sub_end_idx = tuple(map(int, relation_dict['entities'][0].split('|')[-1].split(',')))
     obj_start_idx, obj_end_idx = tuple(map(int, relation_dict['entities'][1].split('|')[-1].split(',')))
     sub_type = mapping[relation_dict['entities'][0].split('|')[1]]
@@ -107,11 +108,14 @@ def get_sentence_re(json_path, html_path):
     ent_list = []
     for ent in entities:
         # {'word':'뉴질랜드', 'start_idx':0, 'end_idx':3, 'type':'ORG'} 형식으로 만들기
-        ent_type = mapping[ent['classId']]
-        word = ent['offsets'][0]['text']
-        start_idx = ent['offsets'][0]['start']
-        end_idx = start_idx + len(word) - 1
-        ent_list.append({'word':word, 'start_idx':start_idx, 'end_idx':end_idx, 'type':ent_type})
+        try:
+            ent_type = mapping[ent['classId']]
+            word = ent['offsets'][0]['text']
+            start_idx = ent['offsets'][0]['start']
+            end_idx = start_idx + len(word) - 1
+            ent_list.append({'word':word, 'start_idx':start_idx, 'end_idx':end_idx, 'type':ent_type})
+        except:
+            continue
     
     add_sents = []
     add_subject = []
