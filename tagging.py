@@ -1,13 +1,14 @@
+# pip install termcolor
 # 주의 : 한번 돌리시면 원큐에 다 끝내실걸 가정하고 만든 프로그램입니다
 # 특정 인덱스만 고치려고 하시는 경우 코드를 변형하거나 수기 라벨링 하시는걸 추천드립니다!
 from termcolor import colored
 import pandas as pd
 
 # 입력 파일명과 새로 저장할 파일명 설정
-FILE_NAME = "./doohae.csv"
-SAVE_NAME = "./new_label.csv"
+FILE_NAME = "./dataset_sample.csv"
+SAVE_NAME = "./new_sample.csv"
 
-df = pd.read_csv('./doohae.csv')
+df = pd.read_csv(FILE_NAME)
 
 # 숫자 입력에 대해 맵핑
 mapping = {
@@ -71,6 +72,8 @@ def correct_csv_all(file, save_path=SAVE_NAME):
         label[idx] = relation
         file.iloc[:, 4] = label
         file.to_csv(save_path, index=False)
+        if idx%50 == 0:
+            print(f"{idx} labels completed!")
 
 
 def main():
