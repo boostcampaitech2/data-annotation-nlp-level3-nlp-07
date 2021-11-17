@@ -28,11 +28,13 @@ mapping = {
 def word_highlight(sentence, sub_si, sub_ei, obj_si, obj_ei):
     mi, ni = max(sub_si, obj_si), min(sub_si, obj_si)
     sent1, sent2 = sentence[:mi], sentence[mi:]
+    # subject가 앞에 있을 때
     if ni == sub_si:
         sub = colored(sent1[sub_si:sub_ei+1], None, "on_red")
-        sent1 = sentence[:sub_si]+sub+sentence[sub_ei+1:]
+        sent1 = sent1[:sub_si]+sub+sent1[sub_ei+1:]
         obj = colored(sent2[:obj_ei-obj_si+1], None, "on_blue")
         sent2 = obj+sent2[obj_ei-obj_si+1:]
+    # object가 앞에 있을 때
     else:
         obj = colored(sent1[obj_si:obj_ei+1], None, "on_blue")
         sent1 = sent1[:obj_si]+obj+sent1[obj_ei+1:]
