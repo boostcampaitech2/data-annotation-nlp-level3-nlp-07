@@ -7,7 +7,7 @@ import argparse
 FILE_NAME = "./bosung.csv"
 SAVE_NAME = "./new_label.csv"
 
-df = pd.read_csv(FILE_NAME)
+
 
 # 숫자 입력에 대해 맵핑
 mapping = {
@@ -88,7 +88,7 @@ def correct_csv_all(checkpoint,file, save_path=SAVE_NAME):
 
 
 def main():
-    global df
+    df = pd.read_csv(FILE_NAME)
     parser = argparse.ArgumentParser()
     parser.add_argument('--cp',default=0,help='enter checkpoint!')
     args = parser.parse_args()
