@@ -78,8 +78,7 @@ def correct_csv_all(checkpoint,file, save_path=SAVE_NAME):
     
     sentence = list(file.iloc[:, 1])
     sub, obj = list(file.iloc[:, 2]), list(file.iloc[:, 3])
-    # label = list(file.iloc[:, 4])
-    label = list(file.iloc[:])
+    label = list(file.iloc[:, 4])
     
     for idx in range(checkpoint,len(label)):
         relation = show_highlight(idx,sentence[idx], sub[idx], obj[idx])
