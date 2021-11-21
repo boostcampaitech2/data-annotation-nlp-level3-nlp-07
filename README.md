@@ -94,7 +94,7 @@ termcolor 모듈 - tagging.py(자체 개발 annotation tool)  \
 
 `pip install termcolor`
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c623bdea-922b-4765-b968-ffc1d0e4f763/Untitled.png)
+https://www.notion.so/510952eb430b429f97c7e2e8820dac1b#a2ba6b0b00974dcfb577415a4f075c60
 
 
 ## **Dataset**
