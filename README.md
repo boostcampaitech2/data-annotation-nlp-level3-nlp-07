@@ -103,23 +103,20 @@ termcolor 모듈 - tagging.py(자체 개발 annotation tool)  \
 
 ## **Dataset**
 
-파일: data/train_dataset/train, data/train_dataset/validation, data/test_dataset/validation 
+디렉토리 : data
 
 ## **Data Analysis**
 
-파일: code/notebooks/(folder)
+디렉토리 : modern_music
 
 ## **Data preprocessing**
 
-파일: preprocess.py, process_data.py, back_translation.py
+파일 : tagging_csv.py, tagging.py
 
 ## **Modeling**
 
-파일: train.py, inference.py, golden_retriever.py, golden_serini.py, inference_serini.py
+디렉토리 : code
 
-## **Ensemble**
-
-파일: mixing_bowl.ipynb, mixing_bowl (1).ipynb
 
 
 - `code` 파일 안에는 각각 구축된 dataset을 BERT 모델을 통해 학습을 실행시킬 수 있는 파일이 들어있습니다.
