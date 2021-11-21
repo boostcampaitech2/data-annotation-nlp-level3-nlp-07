@@ -53,12 +53,10 @@
 
 # 2. Project Outline
 
-- Task : Extractive-based MRC를 위한 ODQA 모델 구축
-- Date : 2021.10.12 - 2021.11.04 (4 weeks)
-- Description : **본 ODQA 대회에서 우리가 만들 모델은 two-stage**로 구성되어 있습니다. **첫 단계는 질문에 관련된 문서를 찾아주는 "retriever"** 단계이고, **다음으로는 관련된 문서를 읽고 적절한 답변을 찾거나 만들어주는 "reader"** 단계입니다. 두 가지 단계를 각각 구성하고 그것들을 적절히 통합하게 되면, 어려운 질문을 던져도 답변을 해주는 ODQA 시스템을 여러분들 손으로 직접 만들어보게 됩니다.
-- Train : 3,952개
-- Validation : 240개
-- Test : 600개
+- Task : 한국어 Relation Extraction task를 위한 데이터 코퍼스 구축
+- Date : 2021.11.08 - 2021.11.19 (2 weeks)
+- Description : 한국어 및 다른 언어에서의 자연어처리 데이터셋의 유형 및 포맷이 어떠한지, 그리고 데이터셋을 구축하는 일반적인 프로세스가 무엇인지 학습하고 위키피디아 원시 말뭉치를 활용하여 직접 관계 추출 태스크에 쓰이는 주석 코퍼스 구축
+
 
 ### 🏆 Final Score
 <br/>
@@ -66,7 +64,7 @@
    <img src="https://user-images.githubusercontent.com/62708568/140643039-32a5da8a-0643-48f6-b272-4fbb6d58c57b.png" style="width:1000px;"/>
 </p>
 <br/>
-대회 사이트 : [AI stage](https://stages.ai/competitions/77)
+대회 사이트 : [AI stage](https://stages.ai/competitions/79/overview/description)
 
 ## **Hardware**
 
