@@ -26,19 +26,19 @@
 
 ### 🔅 Contribution
 
-`김보성`  Modeling • Reference searching • Paper implementation • Ensemble • github management
+`김보성`  Entity Tagging • Relation Tagging • RE Tool 개선
 
-`김지후`   FAISS • Reference Searching
+`김지후`   Entity Tagging • Relation Tagging
 
-`김혜수`  Reference Searching • ElasticSearch config & Optimization • Data Processing • Sparse/Dense Retrieval
+`김혜수`  Entity Tag Set • Relation Tagging • Annotate
 
-`박이삭`  Reference Searching • Github management
+`박이삭`  Entity 정의 • Relation 정의 • Random entity pair 추출
 
-`이다곤`  Data Processing • Generative MRC
+`이다곤`  Entity Tagging • Relation Tagging
 
-`전미원`  Data Preprocessing • Add Elastic Search into baseline • Re-ranking MRC outputs w/ Retrieval • Ensemble
+`전미원`  Data Preprocessing • Entity Tagging • Relation Tagging • Data Pilot
 
-`정두해`  Data Exploration • Baseline Abstraction • Sparse/Dense Retriever • Reader Model Searching • Data Augmentation • MRC Hyperparameter Tuning • Pre/Postprocessing
+`정두해`  RE program 개발 • 한국어 문법 특성 정리 • Entity Tagging • Relation Tagging • Random Entity Pair 추출
 
 [image1]: https://avatars.githubusercontent.com/u/56079922?v=4
 [image2]: https://avatars.githubusercontent.com/u/57887761?v=4
