@@ -90,7 +90,7 @@
 
 `pip install -r requirements.txt`
 
-termcolor 모듈 - tagging.py(자체 개발 annotation tool)
+termcolor 모듈 - tagging.py(자체 개발 annotation tool)  \
 `pip install termcolor`
 
 <br>
