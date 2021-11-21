@@ -38,7 +38,7 @@
 
 `전미원`  Data Preprocessing • Entity Tagging • Relation Tagging • Data Pilot
 
-`정두해`  RE program 개발 • 한국어 문법 특성 정리 • Entity Tagging • Relation Tagging • Random Entity Pair 추출
+`정두해`  RE program 개발 • 한국어 문법 특성 정리 • Entity Tagging • Relation Tagging • Random Entity Pair 추출 • kss 문장 분리
 
 [image1]: https://avatars.githubusercontent.com/u/56079922?v=4
 [image2]: https://avatars.githubusercontent.com/u/57887761?v=4
