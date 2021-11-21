@@ -80,20 +80,6 @@
 - Evaluation : 전체 10% 샘플에 대해 Fleiss Kappa를 활용한 `IAA` (Inter-Annotator Agreement) 측정
 - Testing : klue/roberta-large를 활용하여 구축한 데이터 테스트 및 `EDA`진행
 
-### Checklist
-
-- [x]  EDA
-- [x]  Data Preprocessing(`special character removal`, `getting answer spans' start position with special character tokens`)
-- [x]  Data Augmentation(`Back translation`, `Question generation`)
-- [x]  Data Postprocessing
-- [x]  Experimental Logging (`WandB`)
-- [x]  Retrieval (`dense -- FAISS,using simple dual-encoders`, `sparse -- TF-IDF,BM25,Elastic search`, `Dense+Sparse -- using a linear combination of dense and sparse scores as the new raking function`)
-- [x]  Custom Model Architecture(`Roberta with BiLSTM`, `Roberta with Autoencoder`)
-- [x]  Re-ranker ( combining the reader score with the retriever score via linear combination `inspired by BERTserini`)
-- [x]  Ensemble
-- [ ]  Don't stop Pretraining (additional MLM Task, TAPT + DAPT)
-- [ ]  K-fold cross validation
-- [ ]  Shorten inference time when using elastic search
 
 ### Experiments
 
@@ -120,27 +106,9 @@
 
 `pip install -r requirements.txt`
 
-Elasticsearch 모듈 (출처 : [서중원 멘토님 깃허브](https://github.com/thejungwon/search-engine-tutorial))
-```
-apt-get update && apt-get install -y gnupg2
-wget -qO - [https://artifacts.elastic.co/GPG-KEY-elasticsearch](https://artifacts.elastic.co/GPG-KEY-elasticsearch) | apt-key add -
-apt-get install apt-transport-https
-echo "deb [https://artifacts.elastic.co/packages/7.x/apt](https://artifacts.elastic.co/packages/7.x/apt) stable main" | tee /etc/apt/sources.list.d/elastic-7.x.list
-apt-get update && apt-get install elasticsearch
-service elasticsearch start
-cd /usr/share/elasticsearch
-bin/elasticsearch-plugin install analysis-nori
-service elasticsearch restart
-pip install elasticsearch
-```
+termcolor 모듈
+`pip install termcolor`
 
-BM25 모듈
-
-`pip install rank_bm25`
-
-Google deep_translator 모듈
-
-`pip install -U deep-translator`
 
 ## **Dataset**
 
