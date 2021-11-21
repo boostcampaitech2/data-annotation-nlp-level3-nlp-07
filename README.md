@@ -66,21 +66,19 @@
 <br/>
 대회 사이트 : [AI stage](https://stages.ai/competitions/79/overview/description)
 
-## **Hardware**
-
-AI stage에서 제공한 server, GPU
-
-- GPU: V100
 
 # 3. Solution
 
 ### KEY POINT
 
-- ODQA Task (Open Domain Question Answering) : Retrieval + Reader 모델이 결합된 Hybrid model
-- DPR 논문의 negative sample 추가 학습 + Dense Retriever 모델을 차용해 elasticsearch와 결합하여 retriever 모델 구현
-- GPT-2를 활용해 wiki 데이터의 context에 paired된 질의를 생성해 Retrieval Dense Encoder 모델 학습
-- Data Augmentation을 통해 지문의 길이를 늘린 후 학습 데이터로 이용
-- 대량의 한국어 데이터로 사전학습 되어 있는 `klue/roberta-large` 모델을 리더 모델로 사용
+- Problem Definition : `KLUE` 논문을 바탕으로 관계 추출 태스크에 쓰이는 데이터셋 구축 방식을 학습하고 팀원들간 합의하는 방식 경험
+- Data Analysis : 분량을 나누어 문서들을 각자 읽어 특성을 파악하고 `kss` 모듈을 활용해 문장 분리 및 한국어 언어 특성 학습
+- Pilot Tagging : 가볍게 원시 데이터를 훑어보면서 가능한 Relation 및 Entity Tag set 구상
+- Guideline : 3차례에 걸친 파일럿 태깅 과정에서 팀원들간 논의 및 합의된 내용을 바탕으로 `가이드라인`과 `Relation Map` 구축 + 지속적으로 피드백 반영해 updating
+- Entity Processing : `Tagtog`을 활용해 `Relation Map`에서 정의한 Entity에 해당하는 단어 모두 추출 및 샘플 학습 파일 양식에 맞추어 변형하는 코드 작성
+- Relation Extraction :`Tagtog`, `Google SpreadSheet`, `termcolor 모듈을 활용해 만든 자체 제작 프로그램`을 이용해 Entity pair 태깅
+- Evaluation : 전체 10% 샘플에 대해 Fleiss Kappa를 활용한 `IAA` (Inter-Annotator Agreement) 측정
+- Testing : klue/roberta-large를 활용하여 구축한 데이터 테스트 및 `EDA`진행
 
 ### Checklist
 
