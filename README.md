@@ -61,7 +61,7 @@
 ### 🏆 Final Score
 <br/>
 <p align="center">
-   <img src="https://user-images.githubusercontent.com/62708568/140643039-32a5da8a-0643-48f6-b272-4fbb6d58c57b.png" style="width:1000px;"/>
+   <img src="https://user-images.githubusercontent.com/80743307/142759807-4339a54d-3077-49be-8e44-f04008ce9a17.png" style="width:1000px;"/>
 </p>
 <br/>
 대회 사이트 : [AI stage](https://stages.ai/competitions/79/overview/description)
