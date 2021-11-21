@@ -53,7 +53,7 @@
 
 # 2. Project Outline
 
-- Task : 한국어 Relation Extraction task를 위한 데이터 코퍼스 구축
+- Task : "현대의 음악" 주제 관련 위키피디아 문서롤 이용해 한국어 Relation Extraction task를 위한 데이터 코퍼스 구축
 - Date : 2021.11.08 - 2021.11.19 (2 weeks)
 - Description : 한국어 및 다른 언어에서의 자연어처리 데이터셋의 유형 및 포맷이 어떠한지, 그리고 데이터셋을 구축하는 일반적인 프로세스가 무엇인지 학습하고 위키피디아 원시 말뭉치를 활용하여 직접 관계 추출 태스크에 쓰이는 주석 코퍼스 구축
 
