@@ -121,24 +121,7 @@ termcolor 모듈 - tagging.py(자체 개발 annotation tool)  \
 
 파일: mixing_bowl.ipynb, mixing_bowl (1).ipynb
 
-## Directory
 
-```
-.
-├── mrc-level2-nlp-07
-|    ├── code
-│        ├── outputs
-│        ├── dense_encoder
-│        ├── retriever
-|    ├── data
-│        ├── train_dataset
-|            ├── train
-|            ├── validation
-│        ├── test_dataset
-|            ├── validation
-|        ├── wikipedia_passages.json
-```
-
-- `code` 파일 안에는 각각 **data preprocessing** • **train** • **inference**가 가능한 라이브러리가 들어있습니다.
-- `train.py`를 실행시키면 logs, results, best_model 폴더에 결과들이 저장됩니다.
-- 사용자는 전체 코드를 내려받은 후, argument 옵션을 지정하여 개별 라이브러리 모델을 활용할 수 있습니다.
+- `code` 파일 안에는 각각 구축된 dataset을 BERT 모델을 통해 학습을 실행시킬 수 있는 파일이 들어있습니다.
+- `tagging_csv.py` 파일은 Tagtog 을 통해 작업한 파일들을 `code` 디렉토리에서 실행 가능하도록 변환합니다.
+- `tagging.py` 파일은 자체 제작 relation annotation tool로 추출된 entity pair에 대해 관계 라벨링을 수월하게 하도록 합니다.
