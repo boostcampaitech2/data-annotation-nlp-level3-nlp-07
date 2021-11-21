@@ -1,162 +1,83 @@
-import os
-import json
-from glob import glob
+# pip install termcolor
+# 주의 : 한번 돌리시면 원큐에 다 끝내실걸 가정하고 만든 프로그램입니다
+# 특정 인덱스만 고치려고 하시는 경우 코드를 변형하거나 수기 라벨링 하시는걸 추천드립니다!
+from termcolor import colored
 import pandas as pd
-import re
-from random import randint
-import random
-from collections import deque
-from tqdm.auto import tqdm
 
-###### 폴더명 & csv 파일명 설정 #######
-folder = "./NLP/"
-# csv_name = "./tagtog_NLP_status.csv"
-genre_json = os.path.join(folder, "ann.json/master/pool/")
-genre_html = os.path.join(folder, "plain.html/pool/")
-###################################
+# 입력 파일명과 새로 저장할 파일명 설정
+FILE_NAME = "./dataset_sample.csv"
+SAVE_NAME = "./new_sample.csv"
 
-# entity, relation 맵핑
-with open(os.path.join(folder, "annotations-legend.json"), mode="r", encoding="utf-8") as f:
-    mapping = json.load(f)
+df = pd.read_csv(FILE_NAME)
 
+# 숫자 입력에 대해 맵핑
+mapping = {
+    0 : "gen:origin",
+    1 : "gen:alternate_name",
+    2 : "gen:super_genre",
+    3 : "genre:sub_genre",
+    4 : "genre:artist",
+    5 : "artist:member_of",
+    6 : "producer:product",
+    7 : "product:origin",
+    8 : "no_relation"
+}
 
-# json폴더와 html폴더 탐색하여 genre_list에 ("A.json", "A.html") 형식으로 저장
-genre_json_folder = os.listdir(genre_json)
-genre_list = []
-
-for genre in tqdm(genre_json_folder, desc="make pair of json & html"):
-    json_sub_list = glob(os.path.join(genre_json+genre, "*"))
-    json_files = [file.split('/')[-1].split('.ann')[0] for file in json_sub_list]
-    html_sub_list = [os.path.join(genre_html+genre, file) + ".plain.html" for file in json_files if os.path.exists(os.path.join(genre_html+genre, file) + ".plain.html")]
-    assert len(json_sub_list)==len(html_sub_list), "mismatch in number of sentences!"
-
-    added_list = [(j, h) for j, h in zip(json_sub_list, html_sub_list)]
-    genre_list.extend(added_list)
-
-
-# html로부터 문장 추출하는 함수
-def get_context_from_html(html_file):
-    html_file = re.sub(r"\n","", html_file)
-    return re.findall("(<pre.+>)(.+)(</pre>)",html_file)[0][1]
-
-
-# 높은 확률로 no_relation을 만들기 위한 random (sub, obj) pair 만들기
-def get_random_entities(entities):
-    assert len(entities)>2, "number of entities must be more than 2"
-    num_entities = len(entities)
-    sub_id, obj_id = random.sample(range(num_entities), 2)
-    return entities[sub_id], entities[obj_id]
-
-
-# {"classId":"r_11",
-# "type":"linked",
-# "directed":false,
-# "entities":["s1s1v1|e_1|13,13","s1s1v1|e_5|33,34"],
-# "confidence":{"state":"pre-added","who":["user:Doohae"],"prob":1}}
-
-# 위 형태의 relation_dict와 문장을 입력으로 들어올 때 train.csv 형식에 맞게 subject, object, relation 반환
-def relation_set(relation_dict, sentence, mapping=mapping):
-    # label = mapping[relation_dict['classId']]
-    label = relation_dict['classId']
-    sub_start_idx, sub_end_idx = tuple(map(int, relation_dict['entities'][0].split('|')[-1].split(',')))
-    obj_start_idx, obj_end_idx = tuple(map(int, relation_dict['entities'][1].split('|')[-1].split(',')))
-    sub_type = mapping[relation_dict['entities'][0].split('|')[1]]
-    obj_type = mapping[relation_dict['entities'][1].split('|')[1]]
-    sub_word = sentence[sub_start_idx:sub_end_idx+1]
-    obj_word = sentence[obj_start_idx:obj_end_idx+1]
-    return {'word':sub_word, 'start_idx':sub_start_idx, 'end_idx':sub_end_idx, 'type':sub_type}, \
-            {'word':obj_word, 'start_idx':obj_start_idx, 'end_idx':obj_end_idx, 'type':obj_type}, \
-            label
-
-# [{'classId': 'e_1',
-#   'part': 's1s1v1',
-#   'offsets': [{'start': 0, 'text': '비밥'}],
-#   'coordinates': [],
-#   'confidence': {'state': 'pre-added', 'who': ['user:vgptnv'], 'prob': 1},
-#   'fields': {},
-#   'normalizations': {}},
-#  {'classId': 'e_1',
-#   'part': 's1s1v1',
-#   'offsets': [{'start': 3, 'text': 'bebop'}],
-#   'coordinates': [],
-#   'confidence': {'state': 'pre-added', 'who': ['user:vgptnv'], 'prob': 1},
-#   'fields': {},
-#   'normalizations': {}}]
-
-# "relations":[{"classId":"r_11",
-#                 "type":"linked",
-#                 "directed":false,
-#                 "entities":["s1s1v1|e_1|13,13","s1s1v1|e_5|33,34"],
-#                 "confidence":{"state":"pre-added","who":["user:Doohae"],"prob":1}},
-#             {"classId":"r_21",
-#                 "type":"linked",
-#                 "directed":false,
-#                 "entities":["s1s1v1|e_1|0,1","s1s1v1|e_1|3,7"],
-#                 "confidence":{"state":"pre-added","who":["user:Doohae"],"prob":1}}]
-
-
-# sentence, ent1, ent2, relation 묶음 만들기
-def get_sentence_re(json_path, html_path):
-    with open(html_path, mode="r", encoding="utf-8") as f:
-        html_file = f.read()
-    sentence = get_context_from_html(html_file)
-    sentence = sentence.replace("&quot;", "\"")
-    assert type(sentence)==type("abc"), "sentence type incorrect!"
-
-    with open(json_path, mode="r", encoding="utf-8") as f:
-        json_file = json.load(f)
-    entities = json_file['entities']
-    ent_list = []
-    for ent in entities:
-        # {'word':'뉴질랜드', 'start_idx':0, 'end_idx':3, 'type':'ORG'} 형식으로 만들기
-        try:
-            ent_type = mapping[ent['classId']]
-            word = ent['offsets'][0]['text']
-            start_idx = ent['offsets'][0]['start']
-            end_idx = start_idx + len(word) - 1
-            ent_list.append({'word':word, 'start_idx':start_idx, 'end_idx':end_idx, 'type':ent_type})
-        except:
-            continue
-    
-    add_sents = []
-    add_subject = []
-    add_object = []
-    add_label = []
-
-    relations = json_file['relations']
-    if len(relations) == 0:
-        pass
+# subject, object, sentence 정보가 들어오면
+# subject : 붉은색, object : 푸른색
+# 하이라이트 적용하여 터미널에 출력
+def word_highlight(sentence, sub_si, sub_ei, obj_si, obj_ei):
+    mi, ni = max(sub_si, obj_si), min(sub_si, obj_si)
+    sent1, sent2 = sentence[:mi], sentence[mi:]
+    # subject가 앞에 있을 때
+    if ni == sub_si:
+        sub = colored(sent1[sub_si:sub_ei+1], None, "on_red")
+        sent1 = sent1[:sub_si]+sub+sent1[sub_ei+1:]
+        obj = colored(sent2[:obj_ei-obj_si+1], None, "on_blue")
+        sent2 = obj+sent2[obj_ei-obj_si+1:]
+    # object가 앞에 있을 때
     else:
-        for relation in relations:
-            valid_sub, valid_obj, valid_label = relation_set(relation, sentence)
-            add_sents.append(sentence)
-            add_subject.append(valid_sub)
-            add_object.append(valid_obj)
-            add_label.append(valid_label)
+        obj = colored(sent1[obj_si:obj_ei+1], None, "on_blue")
+        sent1 = sent1[:obj_si]+obj+sent1[obj_ei+1:]
+        sub = colored(sent2[:sub_ei-sub_si+1], None, "on_red")
+        sent2 = sub+sent2[sub_ei-sub_si+1:]
+    print(sent1+sent2)
 
-    if len(ent_list) > 2:
-        rand_sub, rand_obj = get_random_entities(ent_list)
-        add_sents.append(sentence)
-        add_subject.append(rand_sub)
-        add_object.append(rand_obj)
-        add_label.append("no_relation")
 
-    return add_sents, add_subject, add_object, add_label
+# 라베링 대상이 되는 하이라이트 처리된 문장을 띄우고
+# 사용자 입력을 받아 relation 맵핑 처리
+def show_highlight(sentence, sub, obj):
+    print("-"*100)
+    for k, v in mapping.items():
+        print(k, v)
+    print("-"*100)
+    print("Insert proper number for relation!")
+    print("-"*100)
+    sub, obj = eval(sub), eval(obj)
+    ssi, sei = sub['start_idx'], sub['end_idx']
+    osi, oei = obj['start_idx'], obj['end_idx']
+    word_highlight(sentence, ssi, sei, osi, oei)
+    label = int(input("Insert integer type relation : "))
+    assert label in range(9), "Insert Correct Number of Label"
+    return mapping[label]
+
+
+# 사용자가 입력을 할때마다 csv 파일 갱신
+def correct_csv_all(file, save_path=SAVE_NAME):
+    sentence = list(file.iloc[:, 1])
+    sub, obj = list(file.iloc[:, 2]), list(file.iloc[:, 3])
+    label = list(file.iloc[:, 4])
+    for idx in range(len(label)):
+        relation = show_highlight(sentence[idx], sub[idx], obj[idx])
+        label[idx] = relation
+        file.iloc[:, 4] = label
+        file.to_csv(save_path, index=False)
+        if idx%50 == 0:
+            print(f"{idx} labels completed!")
+
 
 def main():
-    sentence = []
-    subject_entity = []
-    object_entity = []
-    label = []
-    for json_path, html_path in tqdm(genre_list, desc="processing csv"):
-        add_sents, add_subject, add_object, add_label = get_sentence_re(json_path, html_path)
-        sentence.extend(add_sents)
-        subject_entity.extend(add_subject)
-        object_entity.extend(add_object)
-        label.extend(add_label)
-
-    df = pd.DataFrame({'id':list(range(len(label))), 'sentence':sentence, 'subject_entity':subject_entity, 'object_entity':object_entity, 'label':label})
-    df.to_csv("./modern_music.csv", index=False)
+    correct_csv_all(df)
 
 
 if __name__ == "__main__":
