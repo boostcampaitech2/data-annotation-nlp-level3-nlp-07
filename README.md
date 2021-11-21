@@ -100,6 +100,7 @@ termcolor 모듈 - tagging.py(자체 개발 annotation tool)  \
 </p>
 <br/>
 Relation Annotation 프로그램 화면 예시
+자세한 사용 방법 : https://nonstop-agenda-2a1.notion.site/Data-Viz-Tagging-Annotation-Tool-356681da873f4da49146965040fec3fd
 
 
 ## **Dataset**
