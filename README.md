@@ -80,22 +80,6 @@
 - Evaluation : 전체 10% 샘플에 대해 Fleiss Kappa를 활용한 `IAA` (Inter-Annotator Agreement) 측정
 - Testing : klue/roberta-large를 활용하여 구축한 데이터 테스트 및 `EDA`진행
 
-
-### Experiments
-
-| Tried Experiments | Pipeline | Performance Improvement |
-| --- | --- | --- |
-| `TF-IDF` | `Retrieval` | <ul><li><center> [x] </center></li> | 
-| `ElasticSearch config setting` | `Retrieval` | <ul><li> [ ] </li> | 
-| `Question Generation (using GPT-2)` | `Retrieval` | <ul><li> [ ] </li> |
-| `hard negative (using BM25 + ElasticSearch)` | `Retrieval` | <ul><li> [x] </li> |
-| `DPR implementation` | `Retrieval` | <ul><li> [x] </li> |
-| `Dense+Sparse` | `Retrieval` | <ul><li> [x] </li> |
-| `Roberta with Bi-LSTM` | `Reader` | <ul><li> [ ] </li> |
-| `Roberta with Autoencoder` | `Reader` | <ul><li> [ ] </li> |
-| `Back-Translation` | `Reader` | <ul><li> [ ] </li> |
-| `Context Concat(hard negative)` | `Reader` | <ul><li> [x] </li> |
-| `Retrival+Reader Re-Ranker`  | `Inference` | <ul><li> [x] </li> |
    
 
 # 4. How to Use
@@ -106,8 +90,14 @@
 
 `pip install -r requirements.txt`
 
-termcolor 모듈
+termcolor 모듈 - tagging.py(자체 개발 annotation tool)
 `pip install termcolor`
+
+<br>
+<p align="center">
+   <img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c623bdea-922b-4765-b968-ffc1d0e4f763/Untitled.png" style="width:1000px;"/>
+</p>
+</br>
 
 
 ## **Dataset**
