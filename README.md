@@ -94,7 +94,11 @@ termcolor 모듈 - tagging.py(자체 개발 annotation tool)  \
 
 `pip install termcolor`
 
-https://user-images.githubusercontent.com/80743307/142759673-0c07b7ed-2508-478e-9fe7-77d39974ed3e.png  
+<br/>
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/80743307/142759673-0c07b7ed-2508-478e-9fe7-77d39974ed3e.png" style="width:1000px;"/>
+</p>
+<br/>
   
 Relation Annotation 프로그램 화면 예시
 
