@@ -91,13 +91,14 @@
 `pip install -r requirements.txt`
 
 termcolor 모듈 - tagging.py(자체 개발 annotation tool)  \
+
 `pip install termcolor`
 
 <br>
 <p align="center">
    <img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c623bdea-922b-4765-b968-ffc1d0e4f763/Untitled.png" style="width:1000px;"/>
 </p>
-</br>
+<br/>
 
 
 ## **Dataset**
