@@ -3,12 +3,13 @@
 # 특정 인덱스만 고치려고 하시는 경우 코드를 변형하거나 수기 라벨링 하시는걸 추천드립니다!
 from termcolor import colored
 import pandas as pd
-
+import argparse
 # 입력 파일명과 새로 저장할 파일명 설정
 FILE_NAME = "./dataset_sample.csv"
 SAVE_NAME = "./new_sample.csv"
 
 df = pd.read_csv(FILE_NAME)
+
 
 # 숫자 입력에 대해 맵핑
 mapping = {
@@ -46,7 +47,8 @@ def word_highlight(sentence, sub_si, sub_ei, obj_si, obj_ei):
 
 # 라베링 대상이 되는 하이라이트 처리된 문장을 띄우고
 # 사용자 입력을 받아 relation 맵핑 처리
-def show_highlight(sentence, sub, obj):
+def show_highlight(idx,sentence, sub, obj):
+    
     print("-"*100)
     for k, v in mapping.items():
         print(k, v)
@@ -57,18 +59,31 @@ def show_highlight(sentence, sub, obj):
     ssi, sei = sub['start_idx'], sub['end_idx']
     osi, oei = obj['start_idx'], obj['end_idx']
     word_highlight(sentence, ssi, sei, osi, oei)
-    label = int(input("Insert integer type relation : "))
-    assert label in range(9), "Insert Correct Number of Label"
-    return mapping[label]
+    print("If you want to take some rest, type save. ")
+    label = input("Insert integer type relation : ")
+    if label == "save":
+        print(f"We all need some break... you've done your job until {idx}")
+        exit(0)
+    else:
+        label=int(label)
+        assert label in range(9), "Insert Correct Number of Label"
+        return mapping[label]
 
 
 # 사용자가 입력을 할때마다 csv 파일 갱신
-def correct_csv_all(file, save_path=SAVE_NAME):
+def correct_csv_all(checkpoint,file, save_path=SAVE_NAME):
+    
+    if checkpoint != 0:
+        print("Checkpoint found, continue from checkpoint...")
+        
+
+    
     sentence = list(file.iloc[:, 1])
     sub, obj = list(file.iloc[:, 2]), list(file.iloc[:, 3])
     label = list(file.iloc[:, 4])
-    for idx in range(len(label)):
-        relation = show_highlight(sentence[idx], sub[idx], obj[idx])
+    
+    for idx in range(checkpoint,len(label)):
+        relation = show_highlight(idx,sentence[idx], sub[idx], obj[idx])
         label[idx] = relation
         file.iloc[:, 4] = label
         file.to_csv(save_path, index=False)
@@ -77,7 +92,14 @@ def correct_csv_all(file, save_path=SAVE_NAME):
 
 
 def main():
-    correct_csv_all(df)
+    df = pd.read_csv(FILE_NAME)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--cp',default=0,help='enter checkpoint!')
+    args = parser.parse_args()
+    checkpoint = int(args.cp)
+    if checkpoint !=0:
+        df = pd.read_csv(SAVE_NAME)
+    correct_csv_all(checkpoint,df)
 
 
 if __name__ == "__main__":
