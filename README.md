@@ -114,7 +114,7 @@ Relation Annotation 프로그램 화면 예시
 
 ## **Data preprocessing**
 
-파일 : tagging_csv.py, tagging.py
+파일 : tagtog_csv.py, tagging.py
 
 ## **Modeling**
 
@@ -123,5 +123,5 @@ Relation Annotation 프로그램 화면 예시
   
 
 - `code` 파일 안에는 각각 구축된 dataset을 BERT 모델을 통해 학습을 실행시킬 수 있는 파일이 들어있습니다.
-- `tagging_csv.py` 파일은 Tagtog 을 통해 작업한 파일들을 `code` 디렉토리에서 실행 가능하도록 변환합니다.
+- `tagtog_csv.py` 파일은 Tagtog 을 통해 작업한 파일들을 `code` 디렉토리에서 실행 가능하도록 변환합니다.
 - `tagging.py` 파일은 자체 제작 relation annotation tool로 추출된 entity pair에 대해 관계 라벨링을 수월하게 하도록 합니다.
