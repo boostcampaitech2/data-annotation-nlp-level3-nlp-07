@@ -1,4 +1,4 @@
-# Boostcamp Machine Reading Comprehension Competition
+# Boostcamp Data Annotation Competition
 ## **Table of contents**
 
 1. [Introduction](#1-introduction)
